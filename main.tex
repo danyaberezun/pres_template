@@ -1,0 +1,299 @@
+\documentclass[10pt,handout]{beamer}
+% \documentclass[10pt,professionalfont]{beamer}
+% \documentclass{beamer}
+% \usepackage[utf8]{inputenc}
+% \usepackage[russian]{babel}
+\usepackage{amssymb,amsmath,cancel,cite,color,cmap,float,graphicx,
+  lmodern,listings,
+  multirow,pifont,pgfplots,txfonts,tikz,wrapfig,xcolor,yfonts}
+\graphicspath{{figures/}}
+\usetikzlibrary{arrows,automata,positioning,shapes,shapes.multipart,snakes}
+\tikzstyle{decision} = [ diamond, aspect=2, draw, fill=blue!20, text width=5em,
+text badly centered, node distance=2cm, inner sep=0pt ]
+\tikzstyle{block} = [ rectangle, draw, text width=5em, text centered,
+rounded corners, minimum height=1em ]
+\tikzstyle{line} = [ draw, -latex' ]
+\newcommand{\tikzmark}[3][]{\tikz[remember picture,baseline]
+  \node [inner xsep=0pt,anchor=base,#1](#2) {#3};}
+
+\usepackage[labelformat=empty]{caption}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setmainfont[Ligatures=TeX]{DejaVu Serif}
+\setsansfont[Ligatures=TeX]{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+
+\mode<presentation> {
+  % \usetheme{CambridgeUS}
+  \usetheme{Copenhagen}
+  % \usecolortheme{lily}
+  \setbeamerfont{institute}{size=\normalsize}
+  \usecolortheme[named=black]{structure}
+  \setbeamertemplate{frametitle}[default][center]
+  \setbeamercolor{footline}{fg=black}
+  \setbeamerfont{footline}{series=\bfseries}
+}
+\beamertemplatenavigationsymbolsempty
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+    \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{dred}{rgb}{0.545,0,0}
+\definecolor{dblue}{rgb}{0,0,0.545}
+\definecolor{lgrey}{rgb}{0.9,0.9,0.9}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\lstset{
+  sensitive=false, % keywords are not case-sensitive
+  morecomment=[l]{//}, % l is for line comment
+  morecomment=[s]{/*}{*/}, % s is for start and end delimiter
+  morecomment=[s][\color{blue}]{/*}{*/},
+  % choose the background color; you must add
+  % \usepackage{color} or \usepackage{xcolor};
+  % should come as last argument
+  backgroundcolor=\color{white},
+  % the size of the fonts that are used for the code
+  basicstyle=\footnotesize,
+  % sets if automatic breaks should only happen at whitespace
+  breakatwhitespace=false,
+  % sets automatic line breaking
+  breaklines=true,
+  % sets the caption-position to bottom
+  captionpos=b,
+  % comment style
+  commentstyle=\color{eclipseGreen},
+  % if you want to delete keywords from the given language
+  deletekeywords={input,...},
+  % if you want to add LaTeX within your code
+  % escapeinside={\%*}{*)},
+  escapeinside={@}{@},
+  % lets you use non-ASCII characters;
+  % for 8-bits encodings only, does not work with UTF-8
+  extendedchars=true,
+  % adds a frame around the code
+  frame=single,
+  % keeps spaces in text, useful for keeping indentation of code
+  % (possibly needs columns=flexible)
+  keepspaces=true,
+  % keyword style
+  keywordstyle=\color{blue},
+  keywordstyle=[2]\color{red},
+  keywordstyle=[3]\color{dkgreen},
+  % the language of the code
+  language=Octave,
+  % if you want to add more keywords to the set
+  morekeywords={foreach,*,...},
+  keywords=[2]{ERROR},
+  keywords=[3]{void,int,double},
+  % where to put the line-numbers; possible values are (none, left, right)
+  numbers=left,
+  % how far the line-numbers are from the code
+  numbersep=5pt,
+  % the style that is used for the line-numbers
+  numberstyle=\tiny\color{mygray},
+  % if not set, the frame-color may be changed on line-breaks within not-black text
+  % (e.g. comments (green here))
+  rulecolor=\color{black},
+  % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showspaces=false,
+  % underline spaces within strings only
+  showstringspaces=false,
+  % show tabs within strings adding particular underscores
+  showtabs=false,
+  % the step between two line-numbers. If it's 1, each line will be numbered
+  stepnumber=1,
+  % string literal style
+  % stringstyle=\color{mymauve},
+  stringstyle=\color{red},
+  % sets default tabsize to 2 spaces
+  tabsize=2,
+  % show the filename of files included with \lstinputlisting;
+  % also try caption instead of title
+  title=\lstname
+}
+\lstdefinelanguage{cpp}{
+    backgroundcolor=\color{lgrey},  
+    basicstyle=\fontsize{9pt}{9} \ttfamily \color{black} \bfseries,   
+    breakatwhitespace=false,       
+    breaklines=true,               
+    captionpos=b,
+    commentstyle=\color{dkgreen},   
+    deletekeywords={...},          
+    escapeinside={\%*}{*)},                  
+    frame=single,                  
+    language=C++,                
+    keywordstyle=\color{purple},  
+    morekeywords={size_t,string,void,int,gc_ptr,gc_new}, 
+    identifierstyle=\color{black},
+    stringstyle=\color{blue},
+    numbers=right,                 
+    numbersep=5pt,                  
+    numberstyle=\tiny\color{black}, 
+    rulecolor=\color{black},        
+    showspaces=false,               
+    showstringspaces=false,        
+	showtabs=false,
+    stepnumber=1,                   
+    tabsize=5,                     
+    title=\lstname
+}
+\lstdefinelanguage{ml}{
+    backgroundcolor=\color{lgrey},  
+    basicstyle=\fontsize{9pt}{9} \ttfamily \color{black} \bfseries,   
+    breakatwhitespace=false,       
+    breaklines=true,               
+    captionpos=b,
+    commentstyle=\color{dkgreen},   
+    deletekeywords={...},          
+    escapeinside={\%*}{*)},                  
+    frame=single,                  
+    language=C++,                
+    keywordstyle=\color{purple},  
+    morekeywords={fun,val,let,in,end,and},
+    identifierstyle=\color{black},
+    stringstyle=\color{blue},
+    numbers=right,                 
+    numbersep=5pt,                  
+    numberstyle=\tiny\color{black}, 
+    rulecolor=\color{black},        
+    showspaces=false,               
+    showstringspaces=false,        
+	showtabs=false,
+    stepnumber=1,                   
+    tabsize=5,                     
+    title=\lstname
+}
+
+% Neil's style TIdigram
+\newcommand{\drawI}[3]{\put#1{\Idiam{#2}{#3}}}
+\newcommand{\Idiam}[2]{%
+ \begin{picture}(20,40)(-10,0)
+   \put(-10,0){\framebox(20,40){}}
+   \put(0,10){\makebox(0,0){\tt #2}}
+   \put(0,30){\makebox(0,0){\tt #1}}
+ \end{picture}
+}
+\newcommand{\lsem}{\mbox{$\lbrack\hspace{-0.3ex}\lbrack$}}
+\newcommand{\rsem}{\mbox{$\rbrack\hspace{-0.3ex}\rbrack$}}
+\newcommand{\sempar}[1]{\mbox{\lsem\pgt{#1}\rsem}}
+\newcommand{\semparlang}[2]{\sempar{#1}$^\pgt{#2}$}
+\newenvironment{TIdiagram}{%
+  \begin{picture}}{\end{picture}}
+\newcommand{\drawT}[4]{\put#1{\Tdiam{#2}{#3}{#4}}}
+\newcommand{\Tdiam}[3]{%
+ \begin{picture}(80,40)(-40,0)
+  \put(-40,40){\line(1,0){80}}
+  \put(-40,40){\line(0,-1){20}}
+  \put(-40,20){\line(1,0){30}}
+  \put(-10,20){\line(0,-1){20}}
+  \put(-10,0){\line(1,0){20}}
+  \put(10,0){\line(0,1){20}}
+  \put(10,20){\line(1,0){30}}
+  \put(40,20){\line(0,1){20}}
+  \put(-29,27){{\tt #1}}
+  \put(21,27){{\tt #2}}
+  \put(-3,7){{\tt #3}}
+  \put(-6, 30){\vector(1,0){12}}
+ \end{picture}
+}
+% End Niel's style TIdiagram
+
+\newcommand{\todo}[1]{\bc {\color{red} TODO: {#1}} \ec}
+\newcommand{\cmark}{\text{\ding{51}}}
+\newcommand{\xmark}{\text{\ding{55}}}
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\green}[1]{{\color{blue!20!black!30!green}#1}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
+\newcommand{\black}[1]{{\color{black}#1}}
+\definecolor{brown}{RGB}{139,69,19}
+\newcommand{\brown}[1]{{\color{brown}#1}}
+\newcommand{\violet}[1]{{\color{violet}#1}}
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+\newcommand\titlebox[2][]{\tikz[overlay]\node[fill=black,
+  text=white,inner sep=20pt, anchor=text,
+  rectangle, rounded corners=2mm,#1] {#2};\phantom{#2}}
+\newcommand\mybox[2][]{\tikz[overlay]\node[fill=blue!20,inner sep=2pt, anchor=text,
+  rectangle, rounded corners=1mm,#1] {#2};\phantom{#2}}
+\newcommand*{\upbullet}{\includegraphics[width=1em]{up}} %% where up is an image
+\setbeamertemplate{itemize item}{$\gtrdot$}
+\setbeamertemplate{itemize subitem}{\textcolor{green}{$\bullet$}}
+\setbeamertemplate{itemize item}[image]
+\setbeamertemplate{itemize subitem}[image]
+\setbeamertemplate{itemize subsubitem}[image]
+
+
+\newenvironment<>{varblock}[2][.9\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block begin}}
+  {\par%
+    \usebeamertemplate{block end}%
+  \end{actionenv}}
+
+% \setbeamerfont{institute}{size=\normalsize}
+
+
+
+
+% \AtBeginSection[]
+% {
+%   \begin{frame}<beamer>
+%     % \frametitle{Outline for section \thesection}
+%     % \tableofcontents[currentsection]
+%   \end{frame}
+% }
+
+
+% \begin{frame}
+% \frametitle{Outline}
+%   \tableofcontents[currentsection]
+% \end{frame}
+
+% \section{Test section one}
+% \section{Test section two}
+
+\begin{document}
+\title[short title]{Title}
+% \subtitle{Static Analysis}
+\author[name surename]{name surename, {\color{blue}{email}}}
+\institute[inst]{institution}
+\date{2020}
+
+\frame[noframenumbering,plain]{
+  \vspace{1cm}
+  \bc
+  \titlebox{\LARGE Title}\\
+  \vspace{0.7cm}
+  % \titlebox{\large \hspace{1.4cm}\textbf{Березун Даниил}\hspace{1.4cm}$\;$}
+  \vspace{2cm}
+  \titlebox{\large \hspace{1.31cm}\textbf{Author}\hspace{1.31cm}$\;$}
+  \ec
+  \vfill
+  \bc date \ec
+}
+
+\addtobeamertemplate{navigation symbols}{}{
+  \usebeamerfont{footline}
+  \fontsize{14pt}{14}\selectfont
+  \usebeamercolor[fg]{footline}
+  \hspace{1em}
+  \circled{$\textswab{\insertframenumber}$}
+}
+\begin{frame}{}
+  TODO
+\end{frame}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
